@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 import configuration from './configs/configuration';
+import { PostgresModule } from './modules/postgres/postgres.module';
 import { UsersModule } from './modules/users/users.module';
 
 @Module({
@@ -10,6 +11,8 @@ import { UsersModule } from './modules/users/users.module';
       load: [configuration],
       isGlobal: true,
     }),
+
+    PostgresModule,
     UsersModule,
   ],
   providers: [],
