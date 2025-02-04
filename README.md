@@ -36,6 +36,7 @@ $ npm install
 
 ```bash
 # development
+"start:docker:local": "docker compose -f docker-compose.local.yaml up --build",
 $ npm run start
 
 # watch mode

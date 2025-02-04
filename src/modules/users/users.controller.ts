@@ -19,7 +19,7 @@ import { UpdateUserReqDto } from './models/dto/req/update-user.req.dto';
 import { UserReqDto } from './models/dto/req/user.req.dto';
 import { UserListReqDto } from './models/dto/req/user-list.req.dto';
 import { UserResDto } from './models/dto/res/user.res.dto';
-import { UsersService } from './users.service';
+import { UsersService } from './services/users.service';
 
 @ApiTags('Users')
 @Controller('users')
