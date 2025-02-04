@@ -1,19 +1,31 @@
-import { IsEmail, IsEnum, IsInt, IsNotIn, IsOptional, IsString, Length, Matches, Max, Min } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { TransformHelper } from '../../../../common/helpers/transform.helper';
+import {
+  IsEmail,
+  IsEnum,
+  IsInt,
+  IsNotIn,
+  IsOptional,
+  IsString,
+  Length,
+  Matches,
+  Max,
+  Min,
+} from 'class-validator';
+
+import { TransformHelper } from '../../../../../common/helpers/transform.helper';
 import { RoleEnum } from '../../enums/role.enum';
 
 export class UserBaseReqDto {
   @IsString()
   @Transform(TransformHelper.trim)
   @IsOptional()
-  @Length(3,20)
+  @Length(3, 20)
   readonly firstName?: string;
 
   @IsString()
   @Transform(TransformHelper.trim)
-  @Length(3,30)
+  @Length(3, 30)
   @IsOptional()
   readonly lastName?: string;
 
@@ -22,7 +34,7 @@ export class UserBaseReqDto {
   // @Transform(TransformHelper.trim)
   readonly age?: number;
 
-  @ApiProperty({example: 'asd@asd.com'})
+  @ApiProperty({ example: 'asd@asd.com' })
   @IsEmail()
   @Transform(TransformHelper.trim)
   @Transform(TransformHelper.toLowerCase)
@@ -43,5 +55,5 @@ export class UserBaseReqDto {
 
   @IsEnum(RoleEnum)
   @IsOptional()
-  readonly role?: RoleEnum
+  readonly role?: RoleEnum;
 }

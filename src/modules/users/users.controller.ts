@@ -1,24 +1,33 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
-import { UsersService } from './users.service';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiConflictResponse,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { UserResDto } from './models/dto/res/user.res.dto';
-import { UserListReqDto } from './models/dto/req/user-list.req.dto';
-import { UserReqDto } from './models/dto/req/user.req.dto';
-import { UpdateUserReqDto } from './models/dto/req/update-user.req.dto';
 
+import { UpdateUserReqDto } from './models/dto/req/update-user.req.dto';
+import { UserReqDto } from './models/dto/req/user.req.dto';
+import { UserListReqDto } from './models/dto/req/user-list.req.dto';
+import { UserResDto } from './models/dto/res/user.res.dto';
+import { UsersService } from './users.service';
 
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @ApiConflictResponse({description: 'Conflict'})
-  @ApiOperation({summary: 'Create user', description: 'Create new user'})
+  @ApiConflictResponse({ description: 'Conflict' })
+  @ApiOperation({ summary: 'Create user', description: 'Create new user' })
   @Post()
   async create(@Body() dto: UserReqDto): Promise<UserResDto> {
     return await this.usersService.create(dto);
