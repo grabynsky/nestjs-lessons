@@ -6,10 +6,11 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
+import { TableNameEnum } from './enums/table-name.enum';
 import { CreatedUpdatedModel } from './models/created-updated.model';
 import { UserEntity } from './user.entity';
 
-@Entity('refresh_tokens')
+@Entity(TableNameEnum.REFRESH_TOKENS)
 export class RefreshTokenEntity extends CreatedUpdatedModel {
   @PrimaryGeneratedColumn()
   id: string;

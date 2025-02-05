@@ -1,10 +1,11 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { TableNameEnum } from "./enums/table-name.enum";
 
 import { CreatedUpdatedModel } from './models/created-updated.model';
 import { PostEntity } from './post.entity';
 import { RefreshTokenEntity } from './refresh-token.entity';
 
-@Entity('users')
+@Entity(TableNameEnum.USER)
 export class UserEntity extends CreatedUpdatedModel {
   @PrimaryGeneratedColumn('uuid')
   id: string;

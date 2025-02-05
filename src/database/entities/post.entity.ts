@@ -6,10 +6,11 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
+import { TableNameEnum } from './enums/table-name.enum';
 import { CreatedUpdatedModel } from './models/created-updated.model';
 import { UserEntity } from './user.entity';
 
-@Entity('post')
+@Entity(TableNameEnum.POST)
 export class PostEntity extends CreatedUpdatedModel {
   @PrimaryGeneratedColumn('uuid')
   id: string;
