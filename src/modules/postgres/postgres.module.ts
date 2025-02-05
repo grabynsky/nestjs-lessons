@@ -30,7 +30,11 @@ import { Config, DatabaseConfig } from '../../configs/config.type';
               '*.entity.js',
             ),
           ],
+          migrations: [
+            path.join(process.cwd(), 'src', 'database', 'migrations', '*.ts'),
+          ],
           synchronize: false,
+          migrationsRun: false,
         };
       },
       inject: [ConfigService],

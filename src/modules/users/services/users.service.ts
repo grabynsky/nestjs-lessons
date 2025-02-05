@@ -13,6 +13,7 @@ export class UsersService {
   public async create(createUserDto: UserReqDto): Promise<UserResDto> {
     const appConfig = this.configService.get<AppConfig>('app');
     console.log(appConfig);
+    new Error('this error in user');
     return {} as UserResDto;
   }
 
