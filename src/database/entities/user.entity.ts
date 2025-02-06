@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { TableNameEnum } from "./enums/table-name.enum";
 
+import { UserID } from '../../common/types/entity-ids.type';
+import { TableNameEnum } from './enums/table-name.enum';
 import { CreatedUpdatedModel } from './models/created-updated.model';
 import { PostEntity } from './post.entity';
 import { RefreshTokenEntity } from './refresh-token.entity';
@@ -8,7 +9,7 @@ import { RefreshTokenEntity } from './refresh-token.entity';
 @Entity(TableNameEnum.USER)
 export class UserEntity extends CreatedUpdatedModel {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id: UserID;
 
   @Column({ type: 'text', nullable: true })
   firstName: string;
@@ -28,6 +29,6 @@ export class UserEntity extends CreatedUpdatedModel {
   @OneToMany(() => RefreshTokenEntity, (entity) => entity.user)
   refreshTokens?: RefreshTokenEntity[];
 
-  @OneToMany(() => PostEntity, (entity) => entity.user)
+  @OneToMany(() => PostEntity, (entity) => entity.user, { onDelete: 'CASCADE' })
   postEntity?: PostEntity[];
 }

@@ -31,10 +31,17 @@ import { Config, DatabaseConfig } from '../../configs/config.type';
             ),
           ],
           migrations: [
-            path.join(process.cwd(), 'src', 'database', 'migrations', '*.ts'),
+            path.join(
+              process.cwd(),
+              'dist',
+              'src',
+              'database',
+              'migrations',
+              '*.ts',
+            ),
           ],
           synchronize: false,
-          migrationsRun: false,
+          migrationsRun: true,
         };
       },
       inject: [ConfigService],

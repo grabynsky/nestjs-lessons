@@ -2,15 +2,12 @@ import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import * as Sentry from '@sentry/nestjs';
-import { nodeProfilingIntegration } from '@sentry/profiling-node';
 
 import { AppModule } from './app.module';
 import { SwaggerHelper } from './common/helpers/swagger.helper';
 import { AppConfig } from './configs/config.type';
 
 async function bootstrap() {
-
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()

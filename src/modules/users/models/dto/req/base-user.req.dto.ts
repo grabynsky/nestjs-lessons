@@ -16,7 +16,7 @@ import {
 import { TransformHelper } from '../../../../../common/helpers/transform.helper';
 import { RoleEnum } from '../../enums/role.enum';
 
-export class UserBaseReqDto {
+export class BaseUserReqDto {
   @IsString()
   @Transform(TransformHelper.trim)
   @IsOptional()

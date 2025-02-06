@@ -3,18 +3,25 @@ import {
   Controller,
   Delete,
   Get,
-  Param,
+  Param, ParseUUIDPipe,
   Patch,
   Post,
   Query,
-} from '@nestjs/common';
+  Req,
+  UseGuards
+} from "@nestjs/common";
 import {
   ApiBearerAuth,
   ApiConflictResponse,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { Request } from 'express';
 
+import { UserID } from '../../common/types/entity-ids.type';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { JwtAccessGuard } from '../auth/guards/jwt-access.guard';
+import { IUserData } from '../auth/models/interface/user-data.interface';
 import { UpdateUserReqDto } from './models/dto/req/update-user.req.dto';
 import { UserReqDto } from './models/dto/req/user.req.dto';
 import { UserListReqDto } from './models/dto/req/user-list.req.dto';
@@ -26,33 +33,44 @@ import { UsersService } from './services/users.service';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @ApiConflictResponse({ description: 'Conflict' })
-  @ApiOperation({ summary: 'Create user', description: 'Create new user' })
-  @Post()
-  async create(@Body() dto: UserReqDto): Promise<UserResDto> {
-    return await this.usersService.create(dto);
+  // @ApiConflictResponse({ description: 'Conflict' })
+  // @ApiOperation({ summary: 'Create user', description: 'Create new user' })
+  // @Post()
+  // async create(@Body() dto: UserReqDto): Promise<UserResDto> {
+  //   return await this.usersService.create(dto);
+  // }
+  //
+  // @ApiBearerAuth()
+  // @Get()
+  // public async findAll(@Query() query: UserListReqDto) {
+  //   return this.usersService.findAll();
+  // }
+
+  @ApiBearerAuth()
+  @ApiTags('ME')
+  @Get('me')
+  public async findMe(@CurrentUser() userData: IUserData) {
+    return await this.usersService.findMe(userData);
   }
 
   @ApiBearerAuth()
-  @Get()
-  findAll(@Query() query: UserListReqDto) {
-    return this.usersService.findAll();
+  @Patch('me')
+  public async update(
+    @CurrentUser() userData: IUserData,
+    @Body() updateUserDto: UpdateUserReqDto,
+  ) {
+    return await this.usersService.updateMe(userData, updateUserDto);
   }
 
   @ApiBearerAuth()
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  @Delete('me')
+  public async removeMe(@CurrentUser() userData: IUserData) {
+    return await this.usersService.removeMe(userData);
   }
 
   @ApiBearerAuth()
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserReqDto) {
-    return this.usersService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  @Get(':userId')
+  public async findOne(@Param('userId', ParseUUIDPipe) userId: UserID) {
+    return await this.usersService.findOne(userId);
   }
 }

@@ -1,7 +1,7 @@
 export class UserBaseResDto {
   readonly id: string;
   readonly firstName?: string;
-  readonly LastName?: string;
+  readonly lastName?: string;
   readonly age?: string;
   readonly email: string;
   readonly password: string;

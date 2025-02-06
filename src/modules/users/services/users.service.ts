@@ -1,39 +1,40 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Repository } from "typeorm";
 
+import { UserID } from '../../../common/types/entity-ids.type';
 import { AppConfig, Config } from '../../../configs/config.type';
-import { UserEntity } from "../../../database/entities/user.entity";
+import { IUserData } from "../../auth/models/interface/user-data.interface";
 import { UpdateUserReqDto } from '../models/dto/req/update-user.req.dto';
-import { UserReqDto } from '../models/dto/req/user.req.dto';
-import { UserResDto } from '../models/dto/res/user.res.dto';
+// import { UserReqDto } from '../models/dto/req/user.req.dto';
+// import { UserResDto } from '../models/dto/res/user.res.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    private readonly configService: ConfigService<Config>,
-    private userRepository: Repository<UserEntity>,
-  ) {}
+  constructor(private readonly configService: ConfigService<Config>) {}
 
-  public async create(createUserDto: UserReqDto): Promise<UserResDto> {
-    const appConfig = this.configService.get<AppConfig>('app');
+  // public async create(createUserDto: UserReqDto): Promise<UserResDto> {
+  //   const appConfig = this.configService.get<AppConfig>('app');
+  //
+  //   return {} as UserResDto;
+  // }
 
-    return {} as UserResDto;
+  public async findMe(userData: IUserData) {
+    return `${userData.userId}`;
   }
 
-  findAll() {
-    return `This action returns all users`;
+  // findAll() {
+  //   return `This action returns all users`;
+  // }
+
+  public async findOne(userId: any) {
+    return `This action returns a #${userId} user`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  public async updateMe(userData: IUserData, dto: UpdateUserReqDto) {
+    return `This action updates a #${userData.userId} user`;
   }
 
-  update(id: number, updateUserDto: UpdateUserReqDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  public async removeMe(userData: IUserData) {
+    return `This action removes a #${userData.userId} user`;
   }
 }

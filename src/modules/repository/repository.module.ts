@@ -8,6 +8,7 @@ const repositories = [UserRepository, PostRepository, RefreshTokenRepository];
 
 @Global()
 @Module({
+  imports: [],
   providers: [...repositories],
   exports: [...repositories],
 })
