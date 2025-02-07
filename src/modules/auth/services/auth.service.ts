@@ -7,6 +7,8 @@ import { UserMapper } from '../../users/services/user.mapper';
 import { SignInReqDto } from '../models/dto/req/sign-in.req.dto';
 import { SignUpReqDto } from '../models/dto/req/sign-up.req.dto';
 import { AuthResDto } from '../models/dto/res/auth.res.dto';
+import { TokenPairResDto } from '../models/dto/res/token-pair.res.dto';
+import { IUserData } from '../models/interface/user-data.interface';
 import { AuthCacheService } from './auth-cache.service';
 import { TokenService } from './token.service';
 
@@ -88,6 +90,38 @@ export class AuthService {
     const userEntity = await this.userRepository.findOneBy({ id: user.id });
 
     return { user: UserMapper.toResDto(userEntity), tokens };
+  }
+
+  public async refresh(userData: IUserData): Promise<TokenPairResDto> {
+    await Promise.all([
+      this.authCacheService.deleteToken(userData.userId, userData.deviceId),
+      this.refreshTokenRepository.delete({
+        user_id: userData.userId,
+        deviceId: userData.deviceId,
+      }),
+    ]);
+
+    const tokens = await this.tokenService.generateAuthTokens({
+      userId: userData.userId,
+      deviceId: userData.deviceId,
+    });
+
+    await Promise.all([
+      this.authCacheService.saveToken(
+        tokens.accessToken,
+        userData.userId,
+        userData.deviceId,
+      ),
+      this.refreshTokenRepository.save(
+        this.refreshTokenRepository.create({
+          user_id: userData.userId,
+          deviceId: userData.deviceId,
+          refreshToken: tokens.refreshToken,
+        }),
+      ),
+    ]);
+
+    return tokens;
   }
 
   private async isEmailNotExistOrThrow(email: string) {
