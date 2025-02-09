@@ -1,8 +1,3 @@
-// import { UserEntity } from '../../../database/entities/user.entity';
-// import { IJwtPayload } from '../../auth/models/interfaces/jwt-payload.interface';
-// import { IUserData } from '../../auth/models/interfaces/user-data.interface';
-// import { UserResDto } from '../models/dto/res/user.res.dto';
-
 import { UserEntity } from '../../../database/entities/user.entity';
 import { IJwtPayload } from '../../auth/models/interface/jwt-payload.interface';
 import { UserResDto } from '../models/dto/res/user.res.dto';
@@ -12,6 +7,9 @@ export class UserMapper {
     return {
       id: user.id,
       email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      phone: user.phone,
     };
   }
 

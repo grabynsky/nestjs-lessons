@@ -92,6 +92,16 @@ export class AuthService {
     return { user: UserMapper.toResDto(userEntity), tokens };
   }
 
+  public async signOut(userData: IUserData): Promise<void> {
+    await Promise.all([
+      this.authCacheService.deleteToken(userData.userId, userData.deviceId),
+      this.refreshTokenRepository.delete({
+        user_id: userData.userId,
+        deviceId: userData.deviceId,
+      }),
+    ]);
+  }
+
   public async refresh(userData: IUserData): Promise<TokenPairResDto> {
     await Promise.all([
       this.authCacheService.deleteToken(userData.userId, userData.deviceId),

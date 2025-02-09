@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { PostID, UserID } from "../../common/types/entity-ids.type";
+import { PostID, UserID } from '../../common/types/entity-ids.type';
 import { TableNameEnum } from './enums/table-name.enum';
 import { CreatedUpdatedModel } from './models/created-updated.model';
 import { UserEntity } from './user.entity';

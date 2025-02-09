@@ -3,13 +3,14 @@ import {
   Controller,
   Delete,
   Get,
-  Param, ParseUUIDPipe,
+  Param,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
   Req,
-  UseGuards
-} from "@nestjs/common";
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiConflictResponse,
@@ -20,12 +21,15 @@ import { Request } from 'express';
 
 import { UserID } from '../../common/types/entity-ids.type';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { SkipAuth } from "../auth/decorators/skip-auth.decorator";
 import { JwtAccessGuard } from '../auth/guards/jwt-access.guard';
 import { IUserData } from '../auth/models/interface/user-data.interface';
 import { UpdateUserReqDto } from './models/dto/req/update-user.req.dto';
 import { UserReqDto } from './models/dto/req/user.req.dto';
 import { UserListReqDto } from './models/dto/req/user-list.req.dto';
 import { UserResDto } from './models/dto/res/user.res.dto';
+import { UserBaseResDto } from './models/dto/res/user-base.res.dto';
+import { UserMapper } from './services/user.mapper';
 import { UsersService } from './services/users.service';
 
 @ApiTags('Users')
@@ -50,7 +54,9 @@ export class UsersController {
   @ApiTags('ME')
   @Get('me')
   public async findMe(@CurrentUser() userData: IUserData) {
-    return await this.usersService.findMe(userData);
+    const result = await this.usersService.findMe(userData);
+
+    return UserMapper.toResDto(result);
   }
 
   @ApiBearerAuth()
@@ -59,18 +65,25 @@ export class UsersController {
     @CurrentUser() userData: IUserData,
     @Body() updateUserDto: UpdateUserReqDto,
   ) {
-    return await this.usersService.updateMe(userData, updateUserDto);
+    const result = await this.usersService.updateMe(userData, updateUserDto);
+
+    return UserMapper.toResDto(result);
   }
 
   @ApiBearerAuth()
   @Delete('me')
-  public async removeMe(@CurrentUser() userData: IUserData) {
+  public async removeMe(@CurrentUser() userData: IUserData): Promise<void> {
     return await this.usersService.removeMe(userData);
   }
 
+  @SkipAuth()
   @ApiBearerAuth()
   @Get(':userId')
-  public async findOne(@Param('userId', ParseUUIDPipe) userId: UserID) {
-    return await this.usersService.findOne(userId);
+  public async findOne(
+    @Param('userId', ParseUUIDPipe) userId: UserID,
+  ): Promise<UserResDto> {
+    const result = await this.usersService.findOne(userId);
+    // return UserMapper.toResDto(result)
+    return result;
   }
 }
